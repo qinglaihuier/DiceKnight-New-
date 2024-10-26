@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ScriptableObjectData
+  m_EditorClassIdentifier: 
+  m_GroupName: ScriptableObjectData
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 73645ac759413f145ba080e6ad210372
+  m_SerializeEntries:
+  - m_GUID: a906aa39fc4c0994facd1529bb7ed586
+    m_Address: PlayerData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35bbdf56f53200d4f902b29dc02f4e55
+    m_Address: CommonDemon
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - EnemyData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5812f366cbfd7746a8a09ec3637277d
+    m_Address: DemonKnight
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - EnemyData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea39af1dc10d8b64aa4fb641fe2677dd
+    m_Address: FlyDemon
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - EnemyData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d145e8e830abdeb4d856f3c445295ed0
+    m_Address: MageDemon
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - EnemyData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 489214ed92200d145a643ac79e8585f2
+    m_Address: SelfDestructingDemon
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - EnemyData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8fc53a2f7596e9c4dbf6207e8e0bcfe7
+    m_Address: SprintDemon
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - EnemyData
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: f7ebf85fcb8d20b4a9f5eb89915b4378, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 10cb963779e87e148b4721b155367503, type: 2}
+    - {fileID: 11400000, guid: 41a896df93eb8ed4a89608c8a18cf17e, type: 2}

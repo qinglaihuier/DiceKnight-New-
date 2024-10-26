@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56e7d82e2a4d73d468b455fc61b25f02, type: 3}
+  m_Name: MageDemon
+  m_EditorClassIdentifier: 
+  hp_a: 1
+  hp_b: 16
+  hp_c: 0.9
+  hp_d: 0.1
+  hp_e: 12
+  atk_a: 1
+  atk_b: 4
+  atk_c: 0.9
+  atk_d: 0.1
+  atk_e: 1
+  satk_a: 1
+  satk_b: 4
+  satk_c: 0.9
+  satk_d: 0.1
+  satk_e: 2
+  pdef_a: 0
+  pdef_b: 4
+  pdef_c: 0.8
+  pdef_d: 0.2
+  pdef_e: 1
+  mdef_a: 0
+  mdef_b: 4
+  mdef_c: 0.8
+  mdef_d: 0.6
+  mdef_e: 1
+  drop_a: 3
+  drop_b: 4
+  drop_c: 0.9
+  drop_d: 0.1
+  drop_e: 2
+  speedSize: 2
+  weight: 2
+  fre: 6
