@@ -58,6 +58,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - EnemyData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 247f6d0f4aefd004e8a4052fca2450ca
+    m_Address: BlowUp
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PropertyExcuteData
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: f7ebf85fcb8d20b4a9f5eb89915b4378, type: 2}
   m_SchemaSet:

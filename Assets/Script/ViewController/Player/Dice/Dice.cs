@@ -9,7 +9,7 @@ namespace ViewController
     {
         public void TriggerDiceInteraction(int value);
     }
-    public interface IDiceItem
+    public interface IDiceProperty
     {
         public void OnExcute();
     }
@@ -35,7 +35,7 @@ namespace ViewController
         private bool move;
         #endregion
 
-        private IDiceItem[] diceItems;
+        private IDiceProperty[] dicePropertys;
         private void Awake()
         {
             rigidbody2D = GetComponent<Rigidbody2D>();
@@ -46,7 +46,7 @@ namespace ViewController
 
             collider2D.enabled = false;
 
-            diceItems = new IDiceItem[6];
+            dicePropertys = new IDiceProperty[6];
         }
 
         public void Throw(int pAtk, Vector2 targetPos, float speedSize)
