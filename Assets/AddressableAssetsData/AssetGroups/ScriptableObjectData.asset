@@ -64,6 +64,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - PropertyExcuteData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 237dadabafc721344b6132aad2543ddd
+    m_Address: ShopData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: f7ebf85fcb8d20b4a9f5eb89915b4378, type: 2}
   m_SchemaSet:

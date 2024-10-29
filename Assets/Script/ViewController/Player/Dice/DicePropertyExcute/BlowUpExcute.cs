@@ -6,7 +6,7 @@ namespace ViewController
 
         public void OnExcute()
         {
-            
-        }
+            Debug.Log("爆炸");
+        }   
     }
 }
