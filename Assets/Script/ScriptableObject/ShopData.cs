@@ -9,6 +9,8 @@ namespace ScriptableObjectData
     {
         public int initialMoney;
         public int refreshCost;
+        public string moneyIsShort;
+        public string purchasedTwo;
     }
 }
 

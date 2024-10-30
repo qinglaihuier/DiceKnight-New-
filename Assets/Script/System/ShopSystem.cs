@@ -11,23 +11,29 @@ namespace System
     {
         public BindableProperty<int> Money { get; }
         public BindableProperty<int> RefreshCost { get; }
-        public BindableProperty<string> CommodityDescription { get; }
+        public BindableProperty<string> InformationBoxDescription { get; }
 
-        public DicePropertyData UpdateOneCommodity(int index);
+        public void PlayerBuyCommodity(int index);
+        public void PlayerSellCommodity();
+        public void InitCommodity();
     }
     public class ShopSystem : AbstractSystem, IShopSystem
     {
         public BindableProperty<int> Money { get; private set; } = new BindableProperty<int>();
         public BindableProperty<int> RefreshCost { get; private set; } = new BindableProperty<int>();
         public List<PurchasedPropertyData> purchasedPropertyDataList = new List<PurchasedPropertyData>(6);
-        public List<DicePropertyData> dicePropertyDataList = new List<DicePropertyData>(3);
+        public List<DicePropertyData> dicePropertyDataList = new List<DicePropertyData>(3) { null, null, null };
 
-        public BindableProperty<string> CommodityDescription { get; private set; } = new BindableProperty<string>("");
+        public BindableProperty<string> InformationBoxDescription { get; private set; } = new BindableProperty<string>("");
 
         #region  Model
         IDicePropertyDataConfigurationModel dicePropertyDataConfigurationModel;
         #endregion
 
+        #region  数据缓存
+        private string moneyIsShort;
+        private string purchasedTwo;
+        #endregion
         protected override void OnInit()
         {
             var data = Addressables.LoadAssetAsync<ShopData>("ShopData");
@@ -35,18 +41,15 @@ namespace System
             Money.Value = data.Result.initialMoney;
             RefreshCost.Value = data.Result.refreshCost;
 
+            moneyIsShort = data.Result.moneyIsShort;
+            purchasedTwo = data.Result.purchasedTwo;
+
             dicePropertyDataConfigurationModel = this.GetModel<IDicePropertyDataConfigurationModel>();
         }
 
-        public DicePropertyData UpdateOneCommodity(int index)
+
+        private DicePropertyData GetOnePurchasableCommodityData()
         {
-            if (index >= 3 || index < 0)
-            {
-#if UNITY_EDITOR
-                Debug.LogError("商品索引错误");
-#endif          
-                return null;
-            }
             int randomNum = UnityEngine.Random.Range(0, dicePropertyDataConfigurationModel.DataList.Count);
             int count = 0;
             while (dicePropertyDataConfigurationModel.DataList[randomNum].purchaseTimes <= 0)
@@ -61,8 +64,61 @@ namespace System
                     return null;
                 }
             }
-            dicePropertyDataList[index] = dicePropertyDataConfigurationModel.DataList[randomNum];
-            return dicePropertyDataList[index];
+            return dicePropertyDataConfigurationModel.DataList[randomNum];
+        }
+
+        public void PlayerBuyCommodity(int index)
+        {
+            if (dicePropertyDataList[index].purchaseTimes <= 0)
+            {
+                InformationBoxDescription.Value = purchasedTwo;
+                return;
+            }
+            if (dicePropertyDataList[index].purchasePrice > Money.Value)
+            {
+                InformationBoxDescription.Value = moneyIsShort;
+                return;
+            }
+            this.SendEvent<BuyCommodityEvent>(new BuyCommodityEvent(dicePropertyDataList[index]));
+            dicePropertyDataList[index].purchaseTimes -= 1;
+            DicePropertyData data = GetOnePurchasableCommodityData();
+            dicePropertyDataList[index] = data;
+
+            this.SendEvent<RefreshSellingCommodity>(new RefreshSellingCommodity(index, data));
+        }
+        public void InitCommodity()
+        {
+            for (int i = 0; i < 3; ++i)
+            {
+                DicePropertyData data = GetOnePurchasableCommodityData();
+                dicePropertyDataList[i] = data;
+
+                this.SendEvent<RefreshSellingCommodity>(new RefreshSellingCommodity(i, data));
+            }
+        }
+
+        public void PlayerSellCommodity()
+        {
+
+        }
+    }
+    public struct BuyCommodityEvent
+    {
+        public DicePropertyData dicePropertyData;
+        public BuyCommodityEvent(DicePropertyData data)
+        {
+            dicePropertyData = data;
+        }
+    }
+    public struct RefreshSellingCommodity
+    {
+        public int index;
+        public DicePropertyData newData;
+
+        public RefreshSellingCommodity(int index, DicePropertyData newData)
+        {
+            this.index = index;
+            this.newData = newData;
         }
     }
     public class PurchasedPropertyData

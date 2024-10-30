@@ -7,7 +7,9 @@ namespace Model
 {
     public enum PropertyType
     {
-        BlowUp
+        BlowUp,
+        Spike,
+        Stun
     }
     public interface IPropertyExcuteDataConfigurationModel : IModel
     {

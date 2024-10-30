@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
+using QFramework;
+using Model;
 
 namespace ViewController
 {
@@ -9,8 +12,9 @@ namespace ViewController
     {
         public void TriggerDiceInteraction(int value);
     }
-    public interface IDiceProperty
+    public interface IDicePropertyExcute
     {
+        public PropertyType PropertyType{ get; }
         public void OnExcute();
     }
     public class Dice : AbstractViewController
@@ -35,7 +39,11 @@ namespace ViewController
         private bool move;
         #endregion
 
-        private IDiceProperty[] dicePropertys;
+        private IDicePropertyExcute[] dicePropertys;
+
+        #region System
+        private IPropertyExcuteSystem propertyExcuteSystem;
+        #endregion
         private void Awake()
         {
             rigidbody2D = GetComponent<Rigidbody2D>();
@@ -46,9 +54,14 @@ namespace ViewController
 
             collider2D.enabled = false;
 
-            dicePropertys = new IDiceProperty[6];
+            dicePropertys = new IDicePropertyExcute[6];
         }
 
+        private void Start()
+        {
+            propertyExcuteSystem = this.GetSystem<IPropertyExcuteSystem>();
+            this.RegisterEvent<BuyCommodityEvent>(OnBuyCommodityEvent).UnRegisterWhenGameObjectDestroyed(gameObject);
+        }
         public void Throw(int pAtk, Vector2 targetPos, float speedSize)
         {
             collider2D.enabled = true;
@@ -77,6 +90,11 @@ namespace ViewController
                     //TODO : 移动停止
                     move = false;
                     Physics2D.IgnoreLayerCollision(playerLayer, diceLayer, false);
+                    int i = (int)UnityEngine.Random.Range(0, 6);
+                    if(dicePropertys[i] != null)
+                    {
+                        dicePropertys[i].OnExcute();
+                    }
                 }
             }
         }
@@ -88,9 +106,21 @@ namespace ViewController
         }
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if(move && other.TryGetComponent<IDiceInteraction>(out var i))
+            if (move && other.TryGetComponent<IDiceInteraction>(out var i))
             {
                 i.TriggerDiceInteraction(pAtk);
+            }
+        }
+        private void OnBuyCommodityEvent(BuyCommodityEvent eventData)
+        {
+            for(int i = 0; i < 6; ++i)
+            {
+                if(dicePropertys[i] == null)
+                {
+                    string excuteName = eventData.dicePropertyData.excuteName;
+                    IDicePropertyExcute dicePropertyExcute = propertyExcuteSystem.GetPropertyExcuteObject(excuteName, eventData.dicePropertyData.level);
+                    dicePropertys[i] = dicePropertyExcute;
+                }
             }
         }
     }

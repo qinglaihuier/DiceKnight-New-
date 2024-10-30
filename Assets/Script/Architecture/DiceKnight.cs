@@ -13,7 +13,12 @@ namespace DiceKnightArchitecture
             this.RegisterModel<IPlayerModel>(new PlayerModel());
             this.RegisterModel<IAllWaveInformationModel>(new AllWaveInformationModel());
             this.RegisterModel<IEnemyDataConfigurationModel>(new EnemyDataConfigurationModel());
+            this.RegisterModel<IDicePropertyDataConfigurationModel>(new DicePropertyDataConfigurationModel());
+            this.RegisterModel<IPropertyExcuteDataConfigurationModel>(new PropertyExcuteDataConfigurationModel());
+            
             this.RegisterSystem<IInputSystem>(new InputSystem());
+            this.RegisterSystem<IPropertyExcuteSystem>(new PropertyExcuteSystem());
+            this.RegisterSystem<IShopSystem>(new ShopSystem());
         }
     }
 }

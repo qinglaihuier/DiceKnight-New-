@@ -12,7 +12,7 @@ namespace Model
     }
     public class DicePropertyDataConfigurationModel : AbstractModel, IDicePropertyDataConfigurationModel
     {
-        private const string PATH = "/Data/PropertyData/PropertyData.xlsx";
+        private const string PATH = "/Data/PropertyData/DicePropertyData.xlsx";
 
         public List<DicePropertyData> DataList { get; private set; } = new List<DicePropertyData>(20);
         protected override void OnInit()
@@ -28,15 +28,17 @@ namespace Model
                     DicePropertyData data = new DicePropertyData();
 
                     data.name = cells[row, 1].Value.ToString();
-                    data.level = (int)cells[row, 2].Value;
+                    data.level = int.Parse(cells[row, 2].Value.ToString());
                     data.description = cells[row, 3].Value.ToString();
-                    data.purchasePrice = (int)cells[row, 4].Value;
-                    data.purchaseTimes = (int)cells[row, 5].Value;
+                    data.purchasePrice = int.Parse(cells[row, 4].Value.ToString());
+                    data.purchaseTimes = int.Parse(cells[row, 5].Value.ToString());
                     data.spritePath = cells[row, 6].Value.ToString();
                     data.excuteName = cells[row, 7].Value.ToString();
-                    data.sellingPrice = (int)cells[row, 8].Value;
+                    data.sellingPrice = int.Parse(cells[row, 8].Value.ToString());
 
                     DataList.Add(data);
+                    Debug.Log(DataList.Count);
+                    ++row;
                 }
             }
         }
