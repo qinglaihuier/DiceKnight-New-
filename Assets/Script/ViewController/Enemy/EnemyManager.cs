@@ -10,7 +10,7 @@ namespace ViewController
     public class EnemyManager : AbstractViewController
     {
         #region  Model
-        private IAllWaveInformationModel waveInformationModel;
+        private IEnemyRefreshModel waveInformationModel;
         private IEnemyDataConfigurationModel enemyDataConfigurationModel;
         //在这里获取了IPlayerModel提供的所有数据 但实际上我们只会用到PlayerPosition 考虑用Query优化？
         //Command或者Query多次创建是否会带来性能问题  充血模型 贫血模型
@@ -19,7 +19,7 @@ namespace ViewController
         #endregion
         private void Awake()
         {
-            waveInformationModel = this.GetModel<IAllWaveInformationModel>();
+            waveInformationModel = this.GetModel<IEnemyRefreshModel>();
             enemyDataConfigurationModel = this.GetModel<IEnemyDataConfigurationModel>();
             playerModel = this.GetModel<IPlayerModel>();
             waveInformationModel.WaveCount.Register(OnWaveCountUpdate).UnRegisterWhenGameObjectDestroyed(gameObject);
@@ -33,7 +33,7 @@ namespace ViewController
             while (true)
             {
                 waveInformationModel.WaveCount.Value += 1;
-                WaveConfigurationInformation info = waveInformationModel.GetWaveInformation();
+                EnemyWaveConfigurationInformation info = waveInformationModel.GetEnemyWaveInformation();
                 Debug.Log("敌人波数更新" + info.waveCount.ToString());
                 yield return new WaitForSeconds(info.duration);
             }
@@ -44,8 +44,8 @@ namespace ViewController
         }
         IEnumerator UpdateEnemyCoroutine()
         {
-            WaveConfigurationInformation info = waveInformationModel.GetWaveInformation();
-            string waveEnemy = info.waveEnemy;
+            EnemyWaveConfigurationInformation info = waveInformationModel.GetEnemyWaveInformation();
+            string waveEnemy = info.waveBeginningEnemy;
             string slowlyRefreshWaveEnemy = info.slowlyRefreshWaveEnemy;
             float waveWeight = info.waveWeight;
             float interval = (float)info.duration / waveWeight;

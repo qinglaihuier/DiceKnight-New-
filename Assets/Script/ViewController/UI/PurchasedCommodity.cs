@@ -45,9 +45,9 @@ namespace ViewController
         {
             shopSystem.InformationBoxDescription.Value = descirption;
         }
-        public void Init(DicePropertyData data)
+        public void Init(DiceItemData data)
         {
-            image.sprite = Addressables.LoadAssetAsync<Sprite>(data.spritePath).WaitForCompletion();
+            image.sprite = Addressables.LoadAssetAsync<Sprite>(data.spriteName).WaitForCompletion();
             Color c = image.color;
             c.a = 1;
             image.color = c;

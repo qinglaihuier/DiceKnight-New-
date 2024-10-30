@@ -20,14 +20,22 @@ namespace ViewController
         {
             shopSystem = this.GetSystem<IShopSystem>();
             goBackButton.onClick.AddListener(OnGoBackButtonClick);
+            shopSystem.Money.Register(OnMoneyChanged).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
         private void OnEnable()
         {
+            Time.timeScale = 0;
             moneyText.text = shopSystem.Money.Value.ToString();
         }
         private void OnGoBackButtonClick()
         {
             gameObject.SetActive(false);
+            Time.timeScale = 1;
+        }
+        private void OnMoneyChanged(int money)
+        {
+            if(gameObject.activeInHierarchy)
+                moneyText.text = money.ToString();
         }
     }
 }

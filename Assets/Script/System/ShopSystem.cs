@@ -21,18 +21,25 @@ namespace System
     {
         public BindableProperty<int> Money { get; private set; } = new BindableProperty<int>();
         public BindableProperty<int> RefreshCost { get; private set; } = new BindableProperty<int>();
-        public List<PurchasedPropertyData> purchasedPropertyDataList = new List<PurchasedPropertyData>(6);
-        public List<DicePropertyData> dicePropertyDataList = new List<DicePropertyData>(3) { null, null, null };
+        /// <summary>
+        ///  已购买的骰子道具
+        /// </summary>
+        public List<DiceItemData> purchasedDiceItemDataList = new List<DiceItemData>(6) { null, null, null, null, null, null };
+        /// <summary>
+        /// 正在销售的骰子道具
+        /// </summary>
+        public List<DiceItemData> diceCommodityDataList = new List<DiceItemData>(3) { null, null, null };
 
         public BindableProperty<string> InformationBoxDescription { get; private set; } = new BindableProperty<string>("");
 
         #region  Model
-        IDicePropertyDataConfigurationModel dicePropertyDataConfigurationModel;
+        IDiceItemDataConfigurationModel diceItemDataConfigurationModel;
         #endregion
 
         #region  数据缓存
-        private string moneyIsShort;
-        private string purchasedTwo;
+        private string moneyIsShort; //缺钱
+        private string purchasedMax; //该道具达最大购买数量，无法再购买
+        private string maximumQuantity; //购买的骰面道具数量达到最大，不能再继续购买
         #endregion
         protected override void OnInit()
         {
@@ -42,19 +49,20 @@ namespace System
             RefreshCost.Value = data.Result.refreshCost;
 
             moneyIsShort = data.Result.moneyIsShort;
-            purchasedTwo = data.Result.purchasedTwo;
+            purchasedMax = data.Result.purchasedTwo;
+            maximumQuantity = data.Result.maximumQuantity;
 
-            dicePropertyDataConfigurationModel = this.GetModel<IDicePropertyDataConfigurationModel>();
+            diceItemDataConfigurationModel = this.GetModel<IDiceItemDataConfigurationModel>();
         }
 
 
-        private DicePropertyData GetOnePurchasableCommodityData()
+        private DiceItemData GetOnePurchasableCommodityData()
         {
-            int randomNum = UnityEngine.Random.Range(0, dicePropertyDataConfigurationModel.DataList.Count);
+            int randomNum = UnityEngine.Random.Range(0, diceItemDataConfigurationModel.DataList.Count);
             int count = 0;
-            while (dicePropertyDataConfigurationModel.DataList[randomNum].purchaseTimes <= 0)
+            while (diceItemDataConfigurationModel.DataList[randomNum].purchaseTimes <= 0)
             {
-                randomNum = UnityEngine.Random.Range(0, dicePropertyDataConfigurationModel.DataList.Count);
+                randomNum = UnityEngine.Random.Range(0, diceItemDataConfigurationModel.DataList.Count);
                 count++;
                 if (count > 15)
                 {
@@ -64,34 +72,54 @@ namespace System
                     return null;
                 }
             }
-            return dicePropertyDataConfigurationModel.DataList[randomNum];
+            return diceItemDataConfigurationModel.DataList[randomNum];
         }
 
         public void PlayerBuyCommodity(int index)
         {
-            if (dicePropertyDataList[index].purchaseTimes <= 0)
+            if (diceCommodityDataList[index].purchaseTimes <= 0)
             {
-                InformationBoxDescription.Value = purchasedTwo;
+                InformationBoxDescription.Value = purchasedMax;
                 return;
             }
-            if (dicePropertyDataList[index].purchasePrice > Money.Value)
+            if (diceCommodityDataList[index].purchasePrice > Money.Value)
             {
                 InformationBoxDescription.Value = moneyIsShort;
                 return;
             }
-            this.SendEvent<BuyCommodityEvent>(new BuyCommodityEvent(dicePropertyDataList[index]));
-            dicePropertyDataList[index].purchaseTimes -= 1;
-            DicePropertyData data = GetOnePurchasableCommodityData();
-            dicePropertyDataList[index] = data;
+            for (int i = 0; i < purchasedDiceItemDataList.Count; ++i)
+            {
+                if (purchasedDiceItemDataList[i] == null)
+                {
+                    purchasedDiceItemDataList[i] = diceCommodityDataList[index];
+                    break;
+                }
+                if (i == purchasedDiceItemDataList.Count - 1)
+                {
+                    InformationBoxDescription.Value = maximumQuantity;
+                    return;
+                }
+            }
+            this.SendEvent<BuyCommodityEvent>(new BuyCommodityEvent(diceCommodityDataList[index]));
+            diceCommodityDataList[index].purchaseTimes -= 1;
+            Money.Value -= diceCommodityDataList[index].purchasePrice;
+
+
+
+            DiceItemData data = GetOnePurchasableCommodityData();
+            diceCommodityDataList[index] = data;
 
             this.SendEvent<RefreshSellingCommodity>(new RefreshSellingCommodity(index, data));
         }
+        /// <summary>
+        /// 游戏开始时初始化商品栏
+        /// </summary>
         public void InitCommodity()
         {
             for (int i = 0; i < 3; ++i)
             {
-                DicePropertyData data = GetOnePurchasableCommodityData();
-                dicePropertyDataList[i] = data;
+                DiceItemData data = GetOnePurchasableCommodityData();
+                diceCommodityDataList[i] = data;
 
                 this.SendEvent<RefreshSellingCommodity>(new RefreshSellingCommodity(i, data));
             }
@@ -102,29 +130,29 @@ namespace System
 
         }
     }
+    /// <summary>
+    /// 购买商品事件
+    /// </summary>
     public struct BuyCommodityEvent
     {
-        public DicePropertyData dicePropertyData;
-        public BuyCommodityEvent(DicePropertyData data)
+        public DiceItemData dicePropertyData;
+        public BuyCommodityEvent(DiceItemData data)
         {
             dicePropertyData = data;
         }
     }
+    /// <summary>
+    /// 购买商品后，刷新商品栏商品事件
+    /// </summary>
     public struct RefreshSellingCommodity
     {
         public int index;
-        public DicePropertyData newData;
+        public DiceItemData newData;
 
-        public RefreshSellingCommodity(int index, DicePropertyData newData)
+        public RefreshSellingCommodity(int index, DiceItemData newData)
         {
             this.index = index;
             this.newData = newData;
         }
-    }
-    public class PurchasedPropertyData
-    {
-        public string spritePath;
-        public int sellingPrice;
-        public string description;
     }
 }

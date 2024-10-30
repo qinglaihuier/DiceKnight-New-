@@ -20,7 +20,6 @@ namespace ViewController
                 Commodity c = transform.GetChild(i).GetComponent<Commodity>();
                 c.index = i;
                 commodities.Add(c);
-
             }
 
             this.RegisterEvent<RefreshSellingCommodity>(OnRefreshSellingCommodityEvent).UnRegisterWhenGameObjectDestroyed(gameObject);
@@ -29,7 +28,6 @@ namespace ViewController
         private void OnRefreshSellingCommodityEvent(RefreshSellingCommodity r)
         {
             commodities[r.index].Init(r.newData);
-            Debug.Log("Refresh");
         }
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace ViewController
 {
-    public class SpikeExcute : IDicePropertyExcute
+    public class SpikeExcute : IDiceItemExcute
     {
-        public PropertyType PropertyType => PropertyType.Spike;
+        public DiceItemType DiceItemType => DiceItemType.Spike;
 
         public void OnExcute()
         {

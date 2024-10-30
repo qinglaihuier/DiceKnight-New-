@@ -5,18 +5,18 @@ using UnityEngine;
 
 namespace ScriptableObjectData.PropertyExcuteData
 {
-    public interface IPropertyExcuteData
+    public interface IDiceItemExcuteData
     {
-        public PropertyType PropertyType { get; }
+        public DiceItemType PropertyType { get; }
 
     }
     [CreateAssetMenu(menuName = "Data/PropertyData/BlowUp")]
-    public class BlowUpExcuteData : ScriptableObject, IPropertyExcuteData
+    public class BlowUpExcuteData : ScriptableObject, IDiceItemExcuteData
     {
         [SerializeField] private List<BlowUpExcuteDataEachLevel> blowUpExcuteDataList;
 
-        [SerializeField] private PropertyType propertyType;
-        public PropertyType PropertyType
+        [SerializeField] private DiceItemType propertyType;
+        public DiceItemType PropertyType
         {
             get
             {

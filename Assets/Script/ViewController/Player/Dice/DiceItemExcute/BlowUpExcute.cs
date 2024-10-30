@@ -3,9 +3,9 @@ using ScriptableObjectData.PropertyExcuteData;
 using UnityEngine;
 namespace ViewController
 {
-    public class BlowUpExcute : IDicePropertyExcute
+    public class BlowUpExcute : IDiceItemExcute
     {
-        public PropertyType PropertyType { get { return PropertyType.BlowUp; } }
+        public DiceItemType DiceItemType { get { return DiceItemType.BlowUp; } }
         public BlowUpExcute()
         {
 

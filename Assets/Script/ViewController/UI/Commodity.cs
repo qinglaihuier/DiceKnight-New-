@@ -57,9 +57,9 @@ namespace ViewController
             }
         }
 
-        public void Init(DicePropertyData data)
+        public void Init(DiceItemData data)
         {
-            image.sprite = Addressables.LoadAssetAsync<Sprite>(data.spritePath).WaitForCompletion();
+            image.sprite = Addressables.LoadAssetAsync<Sprite>(data.spriteName).WaitForCompletion();
 
             Color color = image.color;
             color.a = 1;

@@ -11,6 +11,7 @@ namespace ScriptableObjectData
         public int refreshCost;
         public string moneyIsShort;
         public string purchasedTwo;
+        public string maximumQuantity;
     }
 }
 

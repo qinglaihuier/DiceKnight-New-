@@ -12,9 +12,9 @@ namespace ViewController
     {
         public void TriggerDiceInteraction(int value);
     }
-    public interface IDicePropertyExcute
+    public interface IDiceItemExcute
     {
-        public PropertyType PropertyType{ get; }
+        public DiceItemType DiceItemType{ get; }
         public void OnExcute();
     }
     public class Dice : AbstractViewController
@@ -39,10 +39,10 @@ namespace ViewController
         private bool move;
         #endregion
 
-        private IDicePropertyExcute[] dicePropertys;
+        private IDiceItemExcute[] dicePropertys;
 
         #region System
-        private IPropertyExcuteSystem propertyExcuteSystem;
+        private IDiceItemExcuteSystem propertyExcuteSystem;
         #endregion
         private void Awake()
         {
@@ -54,12 +54,12 @@ namespace ViewController
 
             collider2D.enabled = false;
 
-            dicePropertys = new IDicePropertyExcute[6];
+            dicePropertys = new IDiceItemExcute[6];
         }
 
         private void Start()
         {
-            propertyExcuteSystem = this.GetSystem<IPropertyExcuteSystem>();
+            propertyExcuteSystem = this.GetSystem<IDiceItemExcuteSystem>();
             this.RegisterEvent<BuyCommodityEvent>(OnBuyCommodityEvent).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
         public void Throw(int pAtk, Vector2 targetPos, float speedSize)
@@ -118,7 +118,7 @@ namespace ViewController
                 if(dicePropertys[i] == null)
                 {
                     string excuteName = eventData.dicePropertyData.excuteName;
-                    IDicePropertyExcute dicePropertyExcute = propertyExcuteSystem.GetPropertyExcuteObject(excuteName, eventData.dicePropertyData.level);
+                    IDiceItemExcute dicePropertyExcute = propertyExcuteSystem.GetDiceItemExcuteObject(excuteName, eventData.dicePropertyData.level);
                     dicePropertys[i] = dicePropertyExcute;
                 }
             }

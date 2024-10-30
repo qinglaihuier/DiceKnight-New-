@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace ViewController
 {
-    public class StunExcute : IDicePropertyExcute
+    public class StunExcute : IDiceItemExcute
     {
-        public PropertyType PropertyType => PropertyType.Stun;
+        public DiceItemType DiceItemType => DiceItemType.Stun;
 
         public void OnExcute()
         {

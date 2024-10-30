@@ -11,13 +11,13 @@ namespace DiceKnightArchitecture
         protected override void Init()
         {
             this.RegisterModel<IPlayerModel>(new PlayerModel());
-            this.RegisterModel<IAllWaveInformationModel>(new AllWaveInformationModel());
+            this.RegisterModel<IEnemyRefreshModel>(new EnemyRefreshModel());
             this.RegisterModel<IEnemyDataConfigurationModel>(new EnemyDataConfigurationModel());
-            this.RegisterModel<IDicePropertyDataConfigurationModel>(new DicePropertyDataConfigurationModel());
-            this.RegisterModel<IPropertyExcuteDataConfigurationModel>(new PropertyExcuteDataConfigurationModel());
+            this.RegisterModel<IDiceItemDataConfigurationModel>(new DiceItemDataConfigurationModel());
+            this.RegisterModel<IDiceItemExcuteDataConfigurationModel>(new DiceItemExcuteDataConfigurationModel());
             
             this.RegisterSystem<IInputSystem>(new InputSystem());
-            this.RegisterSystem<IPropertyExcuteSystem>(new PropertyExcuteSystem());
+            this.RegisterSystem<IDiceItemExcuteSystem>(new DiceItemExcuteSystem());
             this.RegisterSystem<IShopSystem>(new ShopSystem());
         }
     }
